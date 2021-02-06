@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 
+/********************************/
 
+const String kEmailHintText = 'Introduce Correo';
+const String kPasswordHintText = 'Introduce Contraseña';
+
+
+
+/*******************************/
 TextStyle kLogoTextStyle = TextStyle(
   fontSize: 50.0 ,
   fontWeight: FontWeight.w900,
@@ -16,8 +23,8 @@ TextStyle kButtonTextStyle = TextStyle(
 );
 
 const InputDecoration kTextFieldDecoration = InputDecoration(
-
-  hintStyle: TextStyle(fontSize: 18.0),
+  floatingLabelBehavior: FloatingLabelBehavior.never,
+  hintStyle: TextStyle(fontSize: 20.0),
   contentPadding:
   EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
   border: OutlineInputBorder(

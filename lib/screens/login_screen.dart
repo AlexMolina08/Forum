@@ -38,14 +38,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
             // TEXTFIELD INTRODUCIR CORREO
             TextField(
-              onChanged: (value) {},
-              decoration: kTextFieldDecoration.copyWith(hintText: 'Introduce Correo')
+                keyboardType: TextInputType.emailAddress,
+                textAlign: TextAlign.center,
+                onChanged: (value) {},
+                decoration: kTextFieldDecoration.copyWith(hintText: 'Introduce Correo')
             ),
             SizedBox(
               height: 20.0,
             ),
             // TEXTFIELD INTRODUCIR CONTRASEÑA
             TextField(
+              obscureText: true,
+              textAlign: TextAlign.center,
               onChanged: (value) {},
               decoration: kTextFieldDecoration.copyWith(hintText:"Introduce Contraseña")
             ),

@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forum/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:forum/screens/message_bubble.dart';
 import 'package:forum/widgets/chat_textfield.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -14,10 +16,12 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance; // instancia de firestore
-  final _textFieldController = TextEditingController();
-
   User _loggedUser;
   String userMessage; // Mensaje que se envia
+
+  // *** Controlladores de widgets
+  final _textFieldController = TextEditingController(); //
+  final _listViewController = ScrollController();
 
   @override
   void initState() {
@@ -100,7 +104,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   .snapshots(), // obtenemos stream de los mensajes
 
               builder: (context, snapshot) {
-                List<Text> messageWidgets = [];
+                List<MessageBubble> messageWidgets = [];
 
                 if (!snapshot.hasData) {
                   return Center(
@@ -115,17 +119,16 @@ class _ChatScreenState extends State<ChatScreen> {
                     final String messageText = message.data()['text'];
 
                     messageWidgets.add(
-                      Text(
-                        '$messageText - ($messageSender)',
-                        style: TextStyle(
-                          fontSize: 20.0
-                        ),
+                      MessageBubble(
+                        text: messageText,
+                        sender: messageSender
                       ),
                     );
                   }
                   return Expanded(
                     child: ListView(
-                      
+                      controller: _listViewController,
+                      padding: EdgeInsets.symmetric(horizontal: 30.0 , vertical: 20.0),
                       children: messageWidgets,
                     ),
                   );
@@ -144,7 +147,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 _firestore
                     .collection('messages')
                     .add({'sender': _loggedUser.email, 'text': userMessage});
+
                 _textFieldController.clear();
+                _listViewController.jumpTo(_listViewController.position.maxScrollExtent); //vamos al final de la lista
+
+
               },
             ),
           ],

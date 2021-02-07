@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forum/screens/chat_screen.dart';
 import 'package:forum/screens/login_screen.dart';
 import 'package:forum/screens/register_screen.dart';
 import 'package:forum/screens/welcome_screen.dart';
@@ -15,9 +16,10 @@ class Forum extends StatelessWidget {
         WelcomeScreen.routeID : (context) => WelcomeScreen(),
         RegisterScreen.routeID : (context) => RegisterScreen(),
         LoginScreen.routeID : (context) => LoginScreen(),
+        ChatScreen.routeID : (context) =>  ChatScreen()
       },
 
-      initialRoute: WelcomeScreen.routeID,
+      initialRoute: ChatScreen.routeID,
     );
   }
 }

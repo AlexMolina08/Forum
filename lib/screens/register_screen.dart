@@ -4,6 +4,7 @@
 
 import  'package:flutter/material.dart';
 import 'package:forum/constants.dart';
+import 'package:forum/screens/chat_screen.dart';
 import 'package:forum/widgets/auth_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -86,9 +87,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // Creamos un nuevo usuario
                 try {
                   final newUser = await _auth.createUserWithEmailAndPassword(email: _email, password: _password);
-
-                  if(newUser != null)
-
+                  if(newUser != null) // si FirebaseAuth no devuelve null , vamos a la pantalla de chat
+                    Navigator.pushNamed(context, ChatScreen.routeID);
                 } on FirebaseAuthException catch (e) {
                   print(e);
                 }

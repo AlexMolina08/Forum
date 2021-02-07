@@ -22,6 +22,12 @@ TextStyle kButtonTextStyle = TextStyle(
   color: Colors.white
 );
 
+const kMessageContainerDecoration = BoxDecoration(
+  border: Border(
+    top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+  ),
+);
+
 const InputDecoration kTextFieldDecoration = InputDecoration(
   floatingLabelBehavior: FloatingLabelBehavior.never,
   hintStyle: TextStyle(fontSize: 20.0),

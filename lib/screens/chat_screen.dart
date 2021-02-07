@@ -14,6 +14,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance; // instancia de firestore
+  final _textFieldController = TextEditingController();
 
   User _loggedUser;
   String userMessage; // Mensaje que se envia
@@ -56,18 +57,16 @@ class _ChatScreenState extends State<ChatScreen> {
 
   }*/
 
-
   /*
   * Escucha los mensajes que van añadiendose a firestore
   * */
-  void messagesStream() async{
-
+  void messagesStream() async {
     Stream snapshots = _firestore.collection('messages').snapshots();
 
     // recorremos cada snapshot (cada cambio que se hace en la base de datos)
     // es decir , que cuando se añada / elimine un mensaje de la coleccion , se llamará a este for
-    await for( var snapshot in _firestore.collection('messages').snapshots() ){
-      for(var message in snapshot.docs){
+    await for (var snapshot in _firestore.collection('messages').snapshots()) {
+      for (var message in snapshot.docs) {
         print(message.data());
       }
     }
@@ -95,16 +94,50 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            StreamBuilder<QuerySnapshot>(
+              stream: _firestore
+                  .collection('messages')
+                  .snapshots(), // obtenemos stream de los mensajes
+
+              builder: (context, snapshot) {
+                List<Text> messageWidgets = [];
+
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }else{
+                  final messages = snapshot.data.docs;
+
+                  // para cada mensaje del snapshot creamos un Text y lo añadimos a la lista que se devuelve
+                  for (var message in messages) {
+                    final String messageSender = message.data()['sender'];
+                    final String messageText = message.data()['text'];
+
+                    messageWidgets.add(Text(
+                      '$messageText - ($messageSender)',
+                    ));
+                  }
+                  return Column(
+                    children: messageWidgets,
+                  );
+                }
+
+                // en cada llamada al builder se devuelve una columna con los nuevos mensajes actualizados
+
+              },
+            ),
             ChatTextField(
-              onChanged: (value){
+              onChanged: (value) {
                 setState(() => userMessage = value);
               },
+              controller: _textFieldController,
               onPressedSend: () {
                 print(userMessage);
-                _firestore.collection('messages').add({
-                  'sender' : _loggedUser.email,
-                  'text' : userMessage
-                });
+                _firestore
+                    .collection('messages')
+                    .add({'sender': _loggedUser.email, 'text': userMessage});
+                _textFieldController.clear();
               },
             ),
           ],

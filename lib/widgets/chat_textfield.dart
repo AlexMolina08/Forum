@@ -13,13 +13,17 @@ class ChatTextField extends StatefulWidget {
   final Function onChanged;
   final Function onPressedSend;
 
-  ChatTextField({@required this.onPressedSend , @required this.onChanged});
+  final controller;
+
+
+  ChatTextField({@required this.onPressedSend , @required this.onChanged , @required this.controller});
 
   @override
   _ChatTextFieldState createState() => _ChatTextFieldState();
 }
 
 class _ChatTextFieldState extends State<ChatTextField> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,6 +37,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 5.0),
                 child: TextField(
+                  controller: widget.controller,
                   onChanged: widget.onChanged,
                   decoration: InputDecoration(
                       hintText: 'Escribe un mensaje',

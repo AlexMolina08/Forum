@@ -90,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     setState(() => _isInAsyncCall = false);
                   }catch(e){
                     print(e);
+                    setState(() {_isInAsyncCall = false;});
                   }
 
                 },

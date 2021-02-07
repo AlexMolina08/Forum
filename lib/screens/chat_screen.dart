@@ -106,7 +106,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                }else{
+                } else {
                   final messages = snapshot.data.docs;
 
                   // para cada mensaje del snapshot creamos un Text y lo añadimos a la lista que se devuelve
@@ -114,17 +114,24 @@ class _ChatScreenState extends State<ChatScreen> {
                     final String messageSender = message.data()['sender'];
                     final String messageText = message.data()['text'];
 
-                    messageWidgets.add(Text(
-                      '$messageText - ($messageSender)',
-                    ));
+                    messageWidgets.add(
+                      Text(
+                        '$messageText - ($messageSender)',
+                        style: TextStyle(
+                          fontSize: 20.0
+                        ),
+                      ),
+                    );
                   }
-                  return Column(
-                    children: messageWidgets,
+                  return Expanded(
+                    child: ListView(
+                      
+                      children: messageWidgets,
+                    ),
                   );
                 }
 
                 // en cada llamada al builder se devuelve una columna con los nuevos mensajes actualizados
-
               },
             ),
             ChatTextField(

@@ -10,6 +10,11 @@ import 'package:forum/constants.dart';
 
 class ChatTextField extends StatefulWidget {
 
+  final Function onChanged;
+  final Function onPressedSend;
+
+  ChatTextField({@required this.onPressedSend , @required this.onChanged});
+
   @override
   _ChatTextFieldState createState() => _ChatTextFieldState();
 }
@@ -28,7 +33,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 5.0),
                 child: TextField(
-                  onChanged: (value) {},
+                  onChanged: widget.onChanged,
                   decoration: InputDecoration(
                       hintText: 'Escribe un mensaje',
                       hintStyle: TextStyle(
@@ -41,7 +46,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
             ),
             Expanded(
               child: FlatButton(
-                onPressed: () {},
+                onPressed: widget.onPressedSend,
                 child: Icon(Icons.send),
               ),
             ),

@@ -92,7 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     setState(()=>_isInAsyncCall = false);
 
                   } on FirebaseAuthException catch (e) {
-                    setState(()=>_isInAsyncCall = true);
+                    setState(()=>_isInAsyncCall = false);
                     print(e);
                   }
                 },

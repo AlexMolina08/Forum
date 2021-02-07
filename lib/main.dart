@@ -3,8 +3,17 @@ import 'package:forum/screens/chat_screen.dart';
 import 'package:forum/screens/login_screen.dart';
 import 'package:forum/screens/register_screen.dart';
 import 'package:forum/screens/welcome_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp( Forum());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    print(e);
+  }
+  runApp(Forum());
+}
 
 class Forum extends StatelessWidget {
   @override
@@ -19,7 +28,7 @@ class Forum extends StatelessWidget {
         ChatScreen.routeID : (context) =>  ChatScreen()
       },
 
-      initialRoute: ChatScreen.routeID,
+      initialRoute: WelcomeScreen.routeID,
     );
   }
 }

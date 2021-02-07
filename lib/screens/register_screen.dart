@@ -1,8 +1,7 @@
 /*
 * Pantalla para registrarse en Forum
 * */
-
-import  'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:forum/constants.dart';
 import 'package:forum/screens/chat_screen.dart';
 import 'package:forum/widgets/auth_button.dart';
@@ -16,20 +15,11 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-
-  String _email ,
-         _password ;
+  String _email, _password;
 
   final FirebaseAuth _auth = FirebaseAuth.instance; // Instancia FirebaseAuth
 
-
   FocusNode focusNode = FocusNode();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +51,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               onChanged: (value) {
                 _email = value;
               },
-              decoration: kTextFieldDecoration.copyWith(hintText: kEmailHintText),
+              decoration:
+                  kTextFieldDecoration.copyWith(hintText: kEmailHintText),
             ),
             SizedBox(
               height: 20.0,
@@ -73,7 +64,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               onChanged: (value) {
                 _password = value;
               },
-              decoration: kTextFieldDecoration.copyWith(hintText: kPasswordHintText),
+              decoration:
+                  kTextFieldDecoration.copyWith(hintText: kPasswordHintText),
             ),
             SizedBox(
               height: 24.0,
@@ -83,11 +75,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
             AuthButton(
               text: 'Registrarse',
               color: kRegisterButtonColor,
-              onPressed: () async{
+              onPressed: () async {
                 // Creamos un nuevo usuario
                 try {
-                  final newUser = await _auth.createUserWithEmailAndPassword(email: _email, password: _password);
-                  if(newUser != null) // si FirebaseAuth no devuelve null , vamos a la pantalla de chat
+                  final newUser = await _auth.createUserWithEmailAndPassword(
+                      email: _email, password: _password);
+
+                  if (newUser != null) // si FirebaseAuth no devuelve null , vamos a la pantalla de chat
                     Navigator.pushNamed(context, ChatScreen.routeID);
                 } on FirebaseAuthException catch (e) {
                   print(e);

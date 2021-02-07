@@ -1,7 +1,6 @@
 /*
 * Pantalla de inicion de sesión de Forum
 * */
-
 import 'package:flutter/material.dart';
 import 'package:forum/constants.dart';
 import 'package:forum/widgets/auth_button.dart';

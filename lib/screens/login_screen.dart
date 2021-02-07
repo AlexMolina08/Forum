@@ -37,11 +37,13 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // LOGO
-              Hero(
-                tag: kLogoAnimationTag,
-                child: Container(
-                  child: Image.asset('images/logo.png'),
-                  height: 150.0,
+              Flexible(
+                child: Hero(
+                  tag: kLogoAnimationTag,
+                  child: Container(
+                    child: Image.asset('images/logo.png'),
+                    height: 200.0,
+                  ),
                 ),
               ),
 

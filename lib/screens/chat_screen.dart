@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:forum/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:forum/screens/message_bubble.dart';
+import 'package:forum/widgets/message_bubble.dart';
 import 'package:forum/widgets/chat_textfield.dart';
+import 'package:forum/widgets/messages_stream.dart';
+
+final _firestore = FirebaseFirestore.instance;
+User _loggedUser;
+
+bool isMe = false;
 
 class ChatScreen extends StatefulWidget {
   static const String routeID = '/chat';
@@ -16,7 +22,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance; // instancia de firestore
-  User _loggedUser;
+
   String userMessage; // Mensaje que se envia
 
   // *** Controlladores de widgets
@@ -50,16 +56,13 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   /*
-  void getMessages() async{
-    final messages =  await _firestore.collection('messages').get();
-
-
-    // una vez que obtenemos los documentos de la coleccion , iteramos sobre cada uno de ellos
-    for(var message in messages.docs){
-      print(message.data());
-    }
-
-  }*/
+  * Añade un mensaje a la colección messages
+  * */
+  void addMessageToCollection() {
+    _firestore.collection('messages').add(
+      {'sender': _loggedUser.email, 'text': userMessage},
+    );
+  }
 
   /*
   * Escucha los mensajes que van añadiendose a firestore
@@ -98,44 +101,8 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            StreamBuilder<QuerySnapshot>(
-              stream: _firestore
-                  .collection('messages')
-                  .snapshots(), // obtenemos stream de los mensajes
-
-              builder: (context, snapshot) {
-                List<MessageBubble> messageWidgets = [];
-
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  final messages = snapshot.data.docs;
-
-                  // para cada mensaje del snapshot creamos un Text y lo añadimos a la lista que se devuelve
-                  for (var message in messages) {
-                    final String messageSender = message.data()['sender'];
-                    final String messageText = message.data()['text'];
-
-                    messageWidgets.add(
-                      MessageBubble(
-                        text: messageText,
-                        sender: messageSender
-                      ),
-                    );
-                  }
-                  return Expanded(
-                    child: ListView(
-                      controller: _listViewController,
-                      padding: EdgeInsets.symmetric(horizontal: 30.0 , vertical: 20.0),
-                      children: messageWidgets,
-                    ),
-                  );
-                }
-
-                // en cada llamada al builder se devuelve una columna con los nuevos mensajes actualizados
-              },
+            MessagesStream(
+              listViewController: _listViewController,
             ),
             ChatTextField(
               onChanged: (value) {
@@ -144,19 +111,76 @@ class _ChatScreenState extends State<ChatScreen> {
               controller: _textFieldController,
               onPressedSend: () {
                 print(userMessage);
-                _firestore
-                    .collection('messages')
-                    .add({'sender': _loggedUser.email, 'text': userMessage});
-
-                _textFieldController.clear();
-                _listViewController.jumpTo(_listViewController.position.maxScrollExtent); //vamos al final de la lista
-
-
+                addMessageToCollection();
+                _textFieldController
+                    .clear(); // limpiamos textfield del mensaje enviado
+                //vamos al final de la lista
+                _listViewController
+                    .jumpTo(_listViewController.position.maxScrollExtent);
               },
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class MessagesStream extends StatelessWidget {
+  final listViewController;
+
+  MessagesStream({this.listViewController});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _firestore
+          .collection('messages')
+          .snapshots(), // obtenemos stream de los mensajes
+
+      // builder se llama cada vez que entran mensajes
+      builder: (context, snapshot) {
+        List<MessageBubble> messageWidgets = [];
+
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          final messages = snapshot.data
+              .docs; //obtenemos los Documentos de esa colección (QueryDocumentSnapShot)
+
+          // para cada mensaje del snapshot creamos un Text y lo añadimos a la lista que se devuelve
+          for (var message in messages) {
+            final String messageSender = message.data()['sender'];
+            final String messageText = message.data()['text'];
+
+            // quien es el usuario
+            if (_loggedUser.email == messageSender) {
+              isMe = true;
+            } else {
+              isMe = false;
+            }
+
+            messageWidgets.add(
+              MessageBubble(
+                text: messageText,
+                sender: messageSender,
+                color: (isMe) ? Colors.lightBlue : Colors.blueGrey,
+              ),
+            );
+          }
+          return Expanded(
+            child: ListView(
+              controller: listViewController,
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+              children: messageWidgets,
+            ),
+          );
+        }
+
+        // en cada llamada al builder se devuelve una columna con los nuevos mensajes actualizados
+      },
     );
   }
 }

@@ -9,17 +9,27 @@ const String kPasswordHintText = 'Introduce Contraseña';
 
 
 /*******************************/
-TextStyle kLogoTextStyle = TextStyle(
+const TextStyle kLogoTextStyle = TextStyle(
   fontSize: 50.0 ,
   fontWeight: FontWeight.w900,
   color: Colors.black54
 );
 
-TextStyle kButtonTextStyle = TextStyle(
+const TextStyle kButtonTextStyle = TextStyle(
   fontSize: 25.0 ,
   letterSpacing: 1.5,
   fontWeight: FontWeight.w400,
   color: Colors.white
+);
+
+const TextStyle kMessageTextStyle = TextStyle(
+  fontSize: 15.0,
+  color: Colors.white
+);
+
+const TextStyle kSenderTextStyle = TextStyle(
+  fontSize: 10.0,
+  color: Colors.blueGrey
 );
 
 const kMessageContainerDecoration = BoxDecoration(
@@ -27,6 +37,7 @@ const kMessageContainerDecoration = BoxDecoration(
     top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
   ),
 );
+
 
 const InputDecoration kTextFieldDecoration = InputDecoration(
   floatingLabelBehavior: FloatingLabelBehavior.never,

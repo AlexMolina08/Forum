@@ -35,11 +35,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // LOGO
-              Hero(
-                tag: kLogoAnimationTag,
-                child: Container(
-                  child: Image.asset('images/logo.png'),
-                  height: 150.0,
+              Flexible( // se intenta que el tamaño sea 150 , si no se puede lo establece a menos
+                child: Hero(
+                  tag: kLogoAnimationTag,
+                  child: Container(
+                    child: Image.asset('images/logo.png'),
+                    height: 200.0,
+                  ),
                 ),
               ),
 

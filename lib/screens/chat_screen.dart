@@ -34,7 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
       final User user =  _auth.currentUser;
       if (user != null) { // Si hay un usuario , creamos un nuevo firebaseuser
         _loggedUser = user;
-        print('usuario logeado: ${_loggedUser.email}');
+        print('CHAT SCREEN: usuario logeado: ${_loggedUser.email}');
       }
     } catch (e){
       print(e);
@@ -52,9 +52,10 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           IconButton(
               icon: Icon(Icons.close),
-              onPressed: () {
-                // TODO: LOGOUT
-              }),
+              onPressed: () async{
+                await _auth.signOut();
+                Navigator.pop(context);
+              },),
         ],
       ),
       body: SafeArea(

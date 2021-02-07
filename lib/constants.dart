@@ -59,6 +59,6 @@ String kLogoAnimationTag = 'logo';
 
 const Color kRegisterButtonColor = Color(0xff0d47a1);
 const Color kLoginButtonColor = Color(0xff1e88e5);
-
+const Color kChatTextFieldColor = Color(0xffe0e0e0);
 const Color kFieldFocusColor = Color(0xfffbc02d);
 const Color kFieldEnabledColor = Color(0xff0288d1);

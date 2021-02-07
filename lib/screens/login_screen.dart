@@ -3,7 +3,9 @@
 * */
 import 'package:flutter/material.dart';
 import 'package:forum/constants.dart';
+import 'package:forum/screens/chat_screen.dart';
 import 'package:forum/widgets/auth_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeID = '/login'; //Ruta de esta página en la app
@@ -13,6 +15,14 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+
+  FirebaseAuth _auth = FirebaseAuth.instance; // instancia de firebaseauth
+
+  String email ,
+         password;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
                 keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  email = value;
+                },
                 decoration: kTextFieldDecoration.copyWith(hintText: 'Introduce Correo')
             ),
             SizedBox(
@@ -49,18 +61,31 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               obscureText: true,
               textAlign: TextAlign.center,
-              onChanged: (value) {},
+              onChanged: (value) {
+                password = value;
+              },
               decoration: kTextFieldDecoration.copyWith(hintText:"Introduce Contraseña")
             ),
             SizedBox(
               height: 24.0,
             ),
-            // BOTÓN DE REGISTRO
+
+            // BOTÓN PARA INICIAR SESIÓN
             AuthButton(
               color: kLoginButtonColor,
               text: 'Entrar',
-              onPressed: () {
-                //TODO IMPLEMENTAR LOGIN
+              onPressed: () async{
+                try{
+                  final loggedUser = await _auth.signInWithEmailAndPassword(email: email, password: password);
+                  print(loggedUser.user);
+                  if(loggedUser != null){ // Si el usuario existe
+                    Navigator.pushNamed(context, ChatScreen.routeID);
+                  }
+
+                }catch(e){
+                  print(e);
+                }
+
               },
             ),
           ],

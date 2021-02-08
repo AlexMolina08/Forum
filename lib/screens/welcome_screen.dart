@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:forum/constants.dart';
 import 'package:forum/screens/login_screen.dart';
 import 'package:forum/screens/register_screen.dart';
@@ -58,7 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: NeumorphicTheme.baseColor(context),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
@@ -87,7 +88,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
                 TypewriterAnimatedTextKit(
                   speed: Duration(milliseconds: 200),
-                  //boxBackgroundColor: Colors.transparent,
                   text: ['Forum'],
                   textStyle: kLogoTextStyle,
                 ),
@@ -98,23 +98,29 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               height: 50.0,
             ),
             //Botón de iniciar sesión
-            AuthButton(
-              onPressed: () {
-                Navigator.pushNamed(context, LoginScreen.routeID);
-              },
-              text: 'Inicia Sesión',
-              color: kLoginButtonColor,
+            Hero(
+              tag : kLoginButtonTag,
+              child: AuthButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, LoginScreen.routeID);
+                },
+                text: 'Inicia Sesión',
+                color: kLoginButtonColor,
+              ),
             ),
             SizedBox(
               height: 30.0,
             ),
             //Botón de registrarse
-            AuthButton(
-              onPressed: () {
-                Navigator.pushNamed(context, RegisterScreen.routeID);
-              },
-              text: 'Regístrate',
-              color: kRegisterButtonColor,
+            Hero(
+              tag: 'register',
+              child: AuthButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, RegisterScreen.routeID);
+                },
+                text: 'Regístrate',
+                color: kRegisterButtonColor,
+              ),
             ),
           ],
         ),

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:forum/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:forum/widgets/message_bubble.dart';
 import 'package:forum/widgets/chat_textfield.dart';
-
 
 final _firestore = FirebaseFirestore.instance;
 User _loggedUser;
@@ -59,7 +59,11 @@ class _ChatScreenState extends State<ChatScreen> {
   * */
   void addMessageToCollection() {
     _firestore.collection('messages').add(
-      {'sender': _loggedUser.email, 'text': userMessage , 'time' : DateTime.now().toIso8601String().toString()},
+      {
+        'sender': _loggedUser.email,
+        'text': userMessage,
+        'time': DateTime.now().toIso8601String().toString()
+      },
     );
   }
 
@@ -82,8 +86,16 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat'),
-        leading: null,
+        title: Text(
+          'Chat',
+          style: TextStyle(
+              fontWeight: FontWeight.w300,
+              color: NeumorphicTheme.defaultTextColor(context)),
+        ),
+        leading: Icon(Icons.animation),
+        backgroundColor: NeumorphicTheme.baseColor(context),
+        elevation: 10.0,
+        centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(Icons.close),
@@ -100,9 +112,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            MessagesStream(
-
-            ),
+            MessagesStream(),
             ChatTextField(
               onChanged: (value) {
                 setState(() => userMessage = value);
@@ -114,7 +124,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 _textFieldController
                     .clear(); // limpiamos textfield del mensaje enviado
                 //vamos al final de la lista
-
               },
             ),
           ],
@@ -165,12 +174,12 @@ class MessagesStream extends StatelessWidget {
               MessageBubble(
                 text: messageText,
                 sender: messageSender,
-                time : messageTime,
+                time: messageTime,
                 isMe: isMe,
               ),
             );
 
-            messageWidgets.sort((a , b ) => b.time.compareTo(a.time));
+            messageWidgets.sort((a, b) => b.time.compareTo(a.time));
           }
           return Expanded(
             child: ListView(

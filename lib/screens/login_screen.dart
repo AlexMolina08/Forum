@@ -2,11 +2,17 @@
 * Pantalla de inicion de sesión de Forum
 * */
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:forum/constants.dart';
 import 'package:forum/screens/chat_screen.dart';
 import 'package:forum/widgets/auth_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:forum/widgets/custom_textfield.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart'; // Circulo de progreso (cargando)
+
+
+
+
 
 class LoginScreen extends StatefulWidget {
   static const String routeID = '/login'; //Ruta de esta página en la app
@@ -17,8 +23,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  bool _isInAsyncCall = false; // Flag para saber cuando mostrar animacion de cargando
+  final GlobalKey<FormState> _passwordForm = GlobalKey<FormState>(); // formulario para textfield contraseña
+  final GlobalKey<FormState> _emailForm = GlobalKey<FormState>();// formulario para textfield email
 
+  bool _isInAsyncCall = false; // Flag para saber cuando mostrar animacion de cargando
   FirebaseAuth _auth = FirebaseAuth.instance; // instancia de firebaseauth
   String _email ,
          _password;
@@ -51,51 +59,66 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 40.0,
               ),
 
-              // TEXTFIELD INTRODUCIR CORREO
-              TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
+
+              CustomTextField(
+                  form: _emailForm,
+                  hintText: kEmailHintText,
+                  onChanged: (value){
                     _email = value;
                   },
-                  decoration: kTextFieldDecoration.copyWith(hintText: 'Introduce Correo')
+                  validator : (val){
+                    return  !val.contains('@') ? 'Introduce correo válido' : null ;
+                  }
               ),
               SizedBox(
                 height: 20.0,
               ),
               // TEXTFIELD INTRODUCIR CONTRASEÑA
-              TextField(
+              CustomTextField(
+                form: _passwordForm,
+                hintText: kPasswordHintText,
                 obscureText: true,
-                textAlign: TextAlign.center,
                 onChanged: (value) {
                   _password = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText:"Introduce Contraseña")
+                validator: (val) {
+                  return val.length < 6 ? 'La contraseña tiene que ser mayor a 6 dígitos' : null;
+                },
+
+
               ),
+
               SizedBox(
                 height: 24.0,
               ),
 
               // BOTÓN PARA INICIAR SESIÓN
-              AuthButton(
-                color: kLoginButtonColor,
-                text: 'Entrar',
-                onPressed: () async{
-                  setState(() => _isInAsyncCall = true);//Activamos flag para activar spinner
-                  try{
-                    final loggedUser = await _auth.signInWithEmailAndPassword(email: _email, password: _password);
-                    print(loggedUser.user);
-                    if(loggedUser != null){ // Si el usuario existe
-                      Navigator.pushNamed(context, ChatScreen.routeID);
+              Hero(
+                tag: kLoginButtonTag,
+                child: AuthButton(
+                  color: kLoginButtonColor,
+                  text: 'Entrar',
+                  onPressed: () async{
+
+                    setState(() => _isInAsyncCall = true);//Activamos flag para activar spinner
+                    try{
+                      final loggedUser = await _auth.signInWithEmailAndPassword(email: _email, password: _password);
+                      print(loggedUser.user);
+                      if(loggedUser != null){ // Si el usuario existe
+                        Navigator.pushNamed(context, ChatScreen.routeID);
+                      }
+
+                      setState(() => _isInAsyncCall = false);
+                    }catch(e){
+                      // si no se ha podido registrar el usuario , validamos los formularios de los textfield para mostrar aviso
+                      _emailForm.currentState.validate(); _passwordForm.currentState.validate();
+
+                      print(e);
+                      setState(() {_isInAsyncCall = false;});
                     }
 
-                    setState(() => _isInAsyncCall = false);
-                  }catch(e){
-                    print(e);
-                    setState(() {_isInAsyncCall = false;});
-                  }
-
-                },
+                  },
+                ),
               ),
             ],
           ),

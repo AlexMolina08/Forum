@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 
 //**************** STRINGS ***************
@@ -10,6 +11,7 @@ const String kPasswordHintText = 'Introduce Contraseña';
 
 //*************** TEXTSTYLES ******************
 
+
 const TextStyle kLogoTextStyle = TextStyle(
   fontSize: 50.0 ,
   fontWeight: FontWeight.w900,
@@ -19,8 +21,8 @@ const TextStyle kLogoTextStyle = TextStyle(
 const TextStyle kButtonTextStyle = TextStyle(
   fontSize: 25.0 ,
   letterSpacing: 1.5,
-  fontWeight: FontWeight.w400,
-  color: Colors.white
+  fontWeight: FontWeight.w500,
+  color: Colors.black
 );
 
 const TextStyle kMessageTextStyle = TextStyle(
@@ -38,6 +40,11 @@ const TextStyle kSenderTextStyle = TextStyle(
   color: Colors.blueGrey
 );
 
+const TextStyle kHintTextStyle = TextStyle(
+  fontSize: 20.0,
+  color: Color(0xff757575),
+);
+
 
 
 // ******************* DECORATION ************************
@@ -49,22 +56,23 @@ const kMessageContainerDecoration = BoxDecoration(
 );
 const InputDecoration kTextFieldDecoration = InputDecoration(
   floatingLabelBehavior: FloatingLabelBehavior.never,
-  hintStyle: TextStyle(fontSize: 20.0),
+  hintStyle: kHintTextStyle,
   contentPadding:
   EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(
       Radius.circular(32.0),
     ),
   ),
   enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: kFieldEnabledColor , width: 1.5),
+    borderSide: BorderSide(color: NeumorphicColors.disabled , width: 0.0),
     borderRadius: BorderRadius.all(
       Radius.circular(32.0),
     ),
   ),
   focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: kFieldFocusColor),
+      borderSide: BorderSide(color: NeumorphicColors.accent),
       borderRadius: BorderRadius.all(
         Radius.circular(32.0),
       )),
@@ -73,6 +81,8 @@ const InputDecoration kTextFieldDecoration = InputDecoration(
 // ***************** ANIMATION TAGS *****************
 
 String kLogoAnimationTag = 'logo';
+String kLoginButtonTag = 'login';
+String kRegisterButtonTag = 'register';
 
 // ***************** colors *********************
 

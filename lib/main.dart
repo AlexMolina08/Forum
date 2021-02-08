@@ -4,6 +4,7 @@ import 'package:forum/screens/login_screen.dart';
 import 'package:forum/screens/register_screen.dart';
 import 'package:forum/screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +20,11 @@ class Forum extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
+      theme: ThemeData(
+        scaffoldBackgroundColor: NeumorphicTheme.baseColor(context),
+      ),
+
       // Rutas de la app
       // Accedo al nombre de la ruta (key del map de routes) accediendo al atributo estático routeID de cada clase
       routes: {
@@ -29,6 +35,7 @@ class Forum extends StatelessWidget {
       },
 
       initialRoute: WelcomeScreen.routeID,
+
     );
   }
 }

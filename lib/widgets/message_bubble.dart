@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:forum/constants.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 
 
@@ -29,16 +30,20 @@ class MessageBubble extends StatelessWidget {
             '$sender',
             style: kSenderTextStyle,
           ),
-          Material(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20.0),
-              bottomRight: Radius.circular(20.0),
-              // dependiendo de quien envíe el mensaje , ajustamos el widget a la derecha o a la izquierda
-              topLeft: (isMe) ? Radius.circular(20.0) : Radius.circular(0.0),
-              topRight: (isMe) ? Radius.circular(0.0) : Radius.circular(20.0)
+          
+          Neumorphic(
+            style: NeumorphicStyle(
+              color: (isMe) ? NeumorphicTheme.variantColor(context) : kOthersMessageColor,
+              boxShape: NeumorphicBoxShape.roundRect(
+                BorderRadius.only(
+                    bottomLeft: Radius.circular(20.0),
+                    bottomRight: Radius.circular(20.0),
+                    // dependiendo de quien envíe el mensaje , ajustamos el widget a la derecha o a la izquierda
+                    topLeft: (isMe) ? Radius.circular(20.0) : Radius.circular(0.0),
+                    topRight: (isMe) ? Radius.circular(0.0) : Radius.circular(20.0)
+                ),
+              )
             ),
-            elevation: 5.0,
-            color: (isMe) ? kUserMessageColor : kOthersMessageColor,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
               child: Text(

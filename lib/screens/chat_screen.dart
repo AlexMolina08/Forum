@@ -5,7 +5,7 @@ import 'package:forum/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:forum/widgets/message_bubble.dart';
 import 'package:forum/widgets/chat_textfield.dart';
-import 'package:forum/widgets/messages_stream.dart';
+
 
 final _firestore = FirebaseFirestore.instance;
 User _loggedUser;
@@ -27,7 +27,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   // *** Controlladores de widgets
   final _textFieldController = TextEditingController(); //
-  final _listViewController = ScrollController();
 
   @override
   void initState() {
@@ -60,7 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
   * */
   void addMessageToCollection() {
     _firestore.collection('messages').add(
-      {'sender': _loggedUser.email, 'text': userMessage},
+      {'sender': _loggedUser.email, 'text': userMessage , 'time' : DateTime.now().toIso8601String().toString()},
     );
   }
 
@@ -89,9 +88,9 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () async {
-              messagesStream();
-              //await _auth.signOut();
-              //Navigator.pop(context);
+              //messagesStream();
+              await _auth.signOut();
+              Navigator.pop(context);
             },
           ),
         ],
@@ -102,7 +101,7 @@ class _ChatScreenState extends State<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             MessagesStream(
-              listViewController: _listViewController,
+
             ),
             ChatTextField(
               onChanged: (value) {
@@ -115,8 +114,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 _textFieldController
                     .clear(); // limpiamos textfield del mensaje enviado
                 //vamos al final de la lista
-                _listViewController
-                    .jumpTo(_listViewController.position.maxScrollExtent);
+
               },
             ),
           ],
@@ -154,8 +152,9 @@ class MessagesStream extends StatelessWidget {
           for (var message in messages) {
             final String messageSender = message.data()['sender'];
             final String messageText = message.data()['text'];
+            final messageTime = message.data()['time'];
 
-            // quien es el usuario
+            // Determinamos quién es el usuario que está logeado
             if (_loggedUser.email == messageSender) {
               isMe = true;
             } else {
@@ -166,13 +165,16 @@ class MessagesStream extends StatelessWidget {
               MessageBubble(
                 text: messageText,
                 sender: messageSender,
-                color: (isMe) ? Colors.lightBlue : Colors.blueGrey,
+                time : messageTime,
+                isMe: isMe,
               ),
             );
+
+            messageWidgets.sort((a , b ) => b.time.compareTo(a.time));
           }
           return Expanded(
             child: ListView(
-              controller: listViewController,
+              reverse: true,
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
               children: messageWidgets,
             ),

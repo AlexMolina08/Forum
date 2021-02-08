@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 
-/********************************/
+//**************** STRINGS ***************
 
 const String kEmailHintText = 'Introduce Correo';
 const String kPasswordHintText = 'Introduce Contraseña';
 
 
 
-/*******************************/
+//*************** TEXTSTYLES ******************
+
 const TextStyle kLogoTextStyle = TextStyle(
   fontSize: 50.0 ,
   fontWeight: FontWeight.w900,
@@ -27,18 +28,25 @@ const TextStyle kMessageTextStyle = TextStyle(
   color: Colors.white
 );
 
+const TextStyle kOthersTextStyle = TextStyle(
+  fontSize: 15.0,
+  color: Colors.black
+);
+
 const TextStyle kSenderTextStyle = TextStyle(
   fontSize: 10.0,
   color: Colors.blueGrey
 );
+
+
+
+// ******************* DECORATION ************************
 
 const kMessageContainerDecoration = BoxDecoration(
   border: Border(
     top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
   ),
 );
-
-
 const InputDecoration kTextFieldDecoration = InputDecoration(
   floatingLabelBehavior: FloatingLabelBehavior.never,
   hintStyle: TextStyle(fontSize: 20.0),
@@ -73,3 +81,6 @@ const Color kLoginButtonColor = Color(0xff1e88e5);
 const Color kChatTextFieldColor = Color(0xffe0e0e0);
 const Color kFieldFocusColor = Color(0xfffbc02d);
 const Color kFieldEnabledColor = Color(0xff0288d1);
+
+const Color kOthersMessageColor = Color(0xffe0e0e0);
+const Color kUserMessageColor = Color(0xff0288d1);

@@ -8,18 +8,22 @@ import 'package:forum/constants.dart';
 
 
 class MessageBubble extends StatelessWidget {
-  final String sender, text;
+  final String sender, text ;
+  final time;
+  final bool isMe;
 
-  final Color color;
+  //TODO IMPLEMENTAR MOSTRAR TIME
 
-  MessageBubble({@required this.sender, @required this.text, @required this.color});
+  MessageBubble({@required this.sender, @required this.text , this.isMe , this.time});
 
   @override
   Widget build(BuildContext context) {
+
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: (isMe) ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             '$sender',
@@ -29,15 +33,17 @@ class MessageBubble extends StatelessWidget {
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(20.0),
               bottomRight: Radius.circular(20.0),
-              topLeft: Radius.circular(20.0)
+              // dependiendo de quien envíe el mensaje , ajustamos el widget a la derecha o a la izquierda
+              topLeft: (isMe) ? Radius.circular(20.0) : Radius.circular(0.0),
+              topRight: (isMe) ? Radius.circular(0.0) : Radius.circular(20.0)
             ),
             elevation: 5.0,
-            color: color,
+            color: (isMe) ? kUserMessageColor : kOthersMessageColor,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
               child: Text(
                 '$text',
-                style: kMessageTextStyle,
+                style: (isMe) ? kMessageTextStyle : kOthersTextStyle,
               ),
             ),
           ),

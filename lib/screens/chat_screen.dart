@@ -54,6 +54,29 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+
+  /*
+  *
+  * Lo que ocurre al darle a enviar mensaje
+  *
+  * */
+  void sendMessage(){
+
+    if(userMessage == null) userMessage = ''; // si se envia string nulo , lo ponemos a string vacio
+
+
+    // si hay un mensaje válido , lo mandamos
+    if(userMessage != '') {
+      addMessageToCollection();
+      // limpiamos textfield del mensaje enviado
+      _textFieldController
+          .clear();
+    }
+
+    userMessage = ''; // reseteamos el string del mensaje
+
+  }
+
   /*
   * Añade un mensaje a la colección messages
   * */
@@ -122,11 +145,9 @@ class _ChatScreenState extends State<ChatScreen> {
               },
               controller: _textFieldController,
               onPressedSend: () {
-                print(userMessage);
-                addMessageToCollection();
-                _textFieldController
-                    .clear(); // limpiamos textfield del mensaje enviado
-                //vamos al final de la lista
+
+                sendMessage();
+
               },
             ),
           ],

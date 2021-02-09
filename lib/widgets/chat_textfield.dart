@@ -52,6 +52,12 @@ class _ChatTextFieldState extends State<ChatTextField> {
             Expanded(
               child: FlatButton(
                 onPressed: widget.onPressedSend,
+                child: Icon(Icons.camera_alt_outlined),
+              ),
+            ),
+            Expanded(
+              child: FlatButton(
+                onPressed: widget.onPressedSend,
                 child: Icon(Icons.send),
               ),
             ),

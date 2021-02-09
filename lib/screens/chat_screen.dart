@@ -92,7 +92,10 @@ class _ChatScreenState extends State<ChatScreen> {
               fontWeight: FontWeight.w300,
               color: NeumorphicTheme.defaultTextColor(context)),
         ),
-        leading: Icon(Icons.animation),
+        leading: Container(
+          padding: EdgeInsets.all(5.0),
+          child: Image.asset('images/logo.png'),
+        ),
         backgroundColor: NeumorphicTheme.baseColor(context),
         elevation: 10.0,
         centerTitle: true,

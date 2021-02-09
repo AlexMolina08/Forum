@@ -18,7 +18,6 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
-
   AnimationController controller; // controller de la animacion
   Animation animation; // para curvedAnimation
 
@@ -34,10 +33,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     // Creamos un ColorTween (va de un color a otro)
     // Llamamos al metodo animate y le pasamos nuestro animationController
     // el metodo animate devuelve una animation
-    animation = CurvedAnimation(
-      curve: Curves.elasticOut,
-      parent: controller
-    );
+    animation = CurvedAnimation(curve: Curves.elasticOut, parent: controller);
 
     // Iniciamos la animacion
     controller.forward();
@@ -69,14 +65,27 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             // logo y nombre
             Row(
               children: [
-                // LOGO (ANIMADO)
-                Hero(
-                  tag: kLogoAnimationTag,
-                  child: Container(
-                    child: Image.asset('images/logo.png'),
-                    height: animation.value*100,
-                  ),
+                // LOGO (ANIMADO) y versión
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Hero(
+                      tag: kLogoAnimationTag,
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Image.asset('images/logo.png'),
+                            height: animation.value * 100,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Text('$kForumVersion' , style: TextStyle(fontSize: 12.0),)
+
+                  ],
                 ),
+
                 SizedBox(
                   width: 20.0,
                 ),
@@ -91,7 +100,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   text: ['Forum'],
                   textStyle: kLogoTextStyle,
                 ),
-
               ],
             ),
             SizedBox(
@@ -99,7 +107,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
             //Botón de iniciar sesión
             Hero(
-              tag : kLoginButtonTag,
+              tag: kLoginButtonTag,
               child: AuthButton(
                 onPressed: () {
                   Navigator.pushNamed(context, LoginScreen.routeID);

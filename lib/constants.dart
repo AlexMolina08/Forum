@@ -8,14 +8,16 @@ const String kEmailHintText = 'Introduce Correo';
 const String kPasswordHintText = 'Introduce Contraseña';
 
 
+const String kForumVersion = '1.0';
+
 
 //*************** TEXTSTYLES ******************
 
 
 const TextStyle kLogoTextStyle = TextStyle(
   fontSize: 50.0 ,
-  fontWeight: FontWeight.w900,
-  color: Colors.black54
+  fontWeight: FontWeight.w300,
+  color: Color(0xff424242)
 );
 
 const TextStyle kButtonTextStyle = TextStyle(

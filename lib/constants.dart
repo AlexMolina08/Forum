@@ -20,6 +20,12 @@ const TextStyle kLogoTextStyle = TextStyle(
   color: Color(0xff424242)
 );
 
+const TextStyle kLoadingTextStyle = TextStyle(
+    fontSize: 20.0 ,
+    fontWeight: FontWeight.w300,
+    color: Color(0xff424242)
+);
+
 const TextStyle kButtonTextStyle = TextStyle(
   fontSize: 25.0 ,
   letterSpacing: 1.5,
@@ -93,6 +99,6 @@ const Color kLoginButtonColor = Color(0xff1e88e5);
 const Color kChatTextFieldColor = Color(0xffe0e0e0);
 const Color kFieldFocusColor = Color(0xfffbc02d);
 const Color kFieldEnabledColor = Color(0xff0288d1);
-
+const Color kLoadingAnimationColor = Color(0xff424242);
 const Color kOthersMessageColor = Color(0xffe0e0e0);
 const Color kUserMessageColor = Color(0xff0288d1);

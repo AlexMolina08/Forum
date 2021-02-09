@@ -1,4 +1,3 @@
 # forum
 
-Habla con todo el mundo en Forum!
-
+Forum es un chat global nutrido por firebase

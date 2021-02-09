@@ -6,6 +6,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:forum/constants.dart';
+import 'package:forum/screens/camera_screen.dart';
+
 
 
 class ChatTextField extends StatefulWidget {
@@ -51,7 +53,9 @@ class _ChatTextFieldState extends State<ChatTextField> {
             ),
             Expanded(
               child: FlatButton(
-                onPressed: widget.onPressedSend,
+                onPressed: (){
+                  Navigator.pushNamed(context, CameraScreen.routeID);
+                },
                 child: Icon(Icons.camera_alt_outlined),
               ),
             ),

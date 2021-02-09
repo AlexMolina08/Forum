@@ -145,9 +145,7 @@ class _ChatScreenState extends State<ChatScreen> {
               },
               controller: _textFieldController,
               onPressedSend: () {
-
                 sendMessage();
-
               },
             ),
           ],

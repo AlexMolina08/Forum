@@ -2,8 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:forum/screens/picture_screen.dart';
-import 'package:path/path.dart' show join;
-import 'package:path_provider/path_provider.dart';
+import 'package:forum/constants.dart';
 
 /*
 *
@@ -34,8 +33,7 @@ class _CameraScreenState extends State<CameraScreen> {
     super.initState();
 
     // inicializamos el controlador (le decimos la cámara que tiene que usar y la resolucion)
-    _cameraController =
-        CameraController(widget.camera, ResolutionPreset.medium);
+    _cameraController = CameraController(widget.camera, ResolutionPreset.high);
 
     // guardamos el future de inicializar el controlador de la camara
     _initializeControllerFuture = _cameraController.initialize();
@@ -50,64 +48,68 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('toma una foto'),
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Text('envia una foto' , style: kPhotoAppBarTextStyle,),
+        leading: Container(
+          padding: EdgeInsets.all(5.0),
+          child: Image.asset('images/logo.png'),
+        ),
+        actions: [
+          FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: Icon(
+              Icons.clear,
+              color: Colors.white,
+            ),
+          )
+        ],
       ),
 
       // esperamos hasta que el controlador esté inicializado antes de mostrar
       // la vista de cámara , para ello usamos un FutureBuilder
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          FutureBuilder<void>(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done)
-                return CameraPreview(_cameraController);
-              else
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-            },
-          ),
-          Expanded(
-            child: Container(
-              color: NeumorphicTheme.baseColor(context),
-              child: FloatingActionButton(
-                onPressed: () async {
-                  // tomar una foto
-                  try {
-                    // asegurarse que la camera está inicializada (espera al future)
-                    await _initializeControllerFuture;
+      body: FutureBuilder<void>(
+        future: _initializeControllerFuture,
+        builder: (context, snapshot) {
+          final size = MediaQuery.of(context).size;
+          final deviceRatio = size.width / size.height;
 
-                    // establecemos el path donde se va a guardar la foto
-                    final path = join(
-                        // Guardare la foto en /temp
-                        // encuentro el /temp usando path_provider
-                        (await getTemporaryDirectory()).path,
-                        // nombre de la foto (fecha actual)
-                        '${DateTime.now()}.png');
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Container(
+              child: Center(child: CameraPreview(_cameraController)),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+      floatingActionButton: Align(
+        alignment: Alignment.bottomCenter,
+        child: FloatingActionButton(
+          child: Icon(Icons.camera_rounded),
+          onPressed: () async {
+            // Intentamos tomar una foto
 
-                    // INTENTO DE TOMAR UNA FOTO Y GUARDARLA EN PATH
-                    XFile file = await _cameraController.takePicture();
+            try {
+              //nos aseguramos que el controlador este inicializado (esperamos a este future)
+              await _initializeControllerFuture;
 
-                    // Si se ha tomado la foto , que se muestre en otra pantalla
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PictureScreen(
-                          imagePath: file.path,
-                        ),
-                      ),
-                    );
-                  } catch (e) {
-                    print(e);
-                  }
-                },
-              ),
-            ),
-          ),
-        ],
+              // intento de guardar la imagen
+              XFile file = await _cameraController.takePicture();
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PictureScreen(imagePath: file.path,)
+                ),
+              );
+            } catch (e) {}
+          },
+        ),
       ),
     );
   }

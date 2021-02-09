@@ -54,6 +54,12 @@ const TextStyle kHintTextStyle = TextStyle(
 );
 
 
+const kPhotoAppBarTextStyle = TextStyle(
+    fontSize: 20.0 ,
+    fontWeight: FontWeight.w300,
+    color: Colors.white,
+);
+
 
 // ******************* DECORATION ************************
 

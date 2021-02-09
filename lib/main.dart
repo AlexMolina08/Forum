@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forum/screens/chat_screen.dart';
 import 'package:forum/screens/loading_screen.dart';
 import 'package:forum/screens/login_screen.dart';
+import 'package:forum/screens/picture_screen.dart';
 import 'package:forum/screens/register_screen.dart';
 import 'package:forum/screens/welcome_screen.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -42,6 +43,7 @@ class Forum extends StatelessWidget {
         ChatScreen.routeID: (context) => ChatScreen(),
         LoadingScreen.routeID: (context) => LoadingScreen(),
         CameraScreen.routeID: (context) => CameraScreen(camera: camera,),
+        PictureScreen.routeID: (context) => PictureScreen(),
       },
 
       initialRoute: LoadingScreen.routeID,

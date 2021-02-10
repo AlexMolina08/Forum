@@ -14,9 +14,8 @@ import 'package:forum/screens/camera_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final cameras =
-      await availableCameras(); // obtengo lista de las camaras disponibles
-  final firstCamera = cameras.first; // escogemos la primera de la lista
+  final cameras = await availableCameras(); // obtengo lista de las camaras disponibles
+  final firstCamera = cameras[1]; // escogemos la primera de la lista
 
   runApp(Forum(camera: firstCamera));
 }

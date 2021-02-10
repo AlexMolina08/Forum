@@ -11,6 +11,7 @@ const String kPasswordHintText = 'Introduce Contraseña';
 const String kForumVersion = '1.0';
 
 
+
 //*************** TEXTSTYLES ******************
 
 
@@ -68,6 +69,22 @@ const kMessageContainerDecoration = BoxDecoration(
     top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
   ),
 );
+
+final kInnerDecoration = BoxDecoration(
+  color: Colors.white,
+  border: Border.all(color: Colors.white),
+  borderRadius: BorderRadius.circular(32),
+);
+
+final kGradientBoxDecoration = BoxDecoration(
+  gradient: LinearGradient(colors: [Colors.white, Colors.black]),
+  border: Border.all(
+    color: Colors.white,
+  ),
+  borderRadius: BorderRadius.circular(32),
+);
+
+
 const InputDecoration kTextFieldDecoration = InputDecoration(
   floatingLabelBehavior: FloatingLabelBehavior.never,
   hintStyle: kHintTextStyle,
